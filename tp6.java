@@ -1,29 +1,36 @@
-import java.io.File;
+package fr.peron.tp;
+
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URL;
 import java.util.Scanner;
-import java.io.File;
-import java.util.Scanner;
-//Package à importer afin d'utiliser l'objet File, et Scanner
 
-
-public class exo1 {
-    public static void main(String[] args) {
-
+public class tp6 {
+    public static void main(String[] args) throws Exception {
         Scanner sc = new Scanner(System.in);
-        System.out.println("Saisissez le nom de votre fichier:");
-        File f = new File(sc.nextLine());
-        //L'utilisateur entre le nom de son fichier
+        System.out.println("veuillez taper l'url de l'image");
+        String imageUrl = sc.nextLine(); //
+        String destinationFile = "image.jpg";
 
-
-        System.out.println("Chemin du fichier : " + f.getAbsolutePath());
-        //
-        System.out.println("Nom du fichier : " + f.getName());
-        System.out.println("Il existe ? " + f.exists());
-        System.out.println("C'est un répertoire ? " + f.isDirectory());
-        System.out.println("C'est un fichier ? " + f.isFile());
-
-        // Le fichier entrée par l'utilisateur est analysé par les méthodes suivante
-
-
-
+        saveImage(imageUrl, destinationFile);
     }
+
+    public static void saveImage(String imageUrl, String destinationFile) throws IOException {
+        URL url = new URL(imageUrl); //la variable URL est instanciée
+        InputStream is = url.openStream();
+        OutputStream os = new FileOutputStream(destinationFile);// la destination de la réécriture de l'image est faite ici
+
+        byte[] b = new byte[2048]; // les bytes sont stockés dans un tableau de 2048 places
+        int length;
+
+        while ((length = is.read(b)) != -1) { /* La boucle permettant la lecture et l'écriture de l'image est faite ici*/
+            os.write(b, 0, length);
+        }
+
+        is.close();
+        os.close();
+    }
+
 }
